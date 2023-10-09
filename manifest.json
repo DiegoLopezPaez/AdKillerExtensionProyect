@@ -5,7 +5,7 @@
   "version": "1.0",
   "icons": {
     "48": "images/icon48.png",
-    "128": "images/icon128.png"
+    "128": "images/logo.png"
   },
   "background": {
     "service_worker": "scripts/background.js"
@@ -13,7 +13,7 @@
   "action": {
     "default_icon": {
       "48": "images/icon48.png",
-      "128": "images/icon128.png"
+      "128": "images/logo.png"
     }
   },
   "permissions": ["activeTab", "scripting"],
