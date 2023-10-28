@@ -8,7 +8,7 @@
     "128": "images/logo.png"
   },
   "background": {
-    "service_worker": "scripts/background.js"
+    "service_worker": "scripts/service-worker.js"
   },
   "action": {
     "default_icon": {
@@ -16,13 +16,5 @@
       "128": "images/logo.png"
     }
   },
-  "permissions": ["activeTab", "scripting"],
-  "commands": {
-    "_execute_action": {
-      "suggested_key": {
-        "default": "Ctrl+B",
-        "mac": "Command+B"
-      }
-    }
-  }
+  "permissions": ["activeTab", "scripting", "offscreen", "tabCapture", "storage"]
 }
