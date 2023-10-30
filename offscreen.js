@@ -77,7 +77,7 @@ async function doRecord(time, media, data){
     console.log("En el timeout, esperando...")
     await new Promise(resolve => setTimeout(resolve, time));
     console.log("Frenando...")
-    recorder.stop();
+    await recorder.stop();
     console.log("Termino.")
   }
 }
@@ -112,9 +112,13 @@ function getNewRecorder(media, data){
   ret.ondataavailable = (event) => data.push(event.data);
   ret.onstop = () => {
     const blob = new Blob(data, { type: 'audio/webm' });
+    //window.open(URL.createObjectURL(blob), '_blank');
+    //blob = convertWebmToMp3(blob);
     
     // Serializar en JSON
     blobToBase64(blob).then(base64String => {
+      console.log(base64String);
+      base64String = base64String.split(',')[1];
       const jsonAudioData = JSON.stringify({ audio: base64String });
       navigator.serviceWorker.ready.then((registration) => {
         registration.active.postMessage(jsonAudioData);
@@ -151,3 +155,20 @@ async function unmuteAudio(){
   // gainNode.connect(output.destination);
   // // Establecer el valor de ganancia a cero (para silenciar el audio)
   // gainNode.gain.value = "0";
+
+  // async function convertWebmToMp3(webmBlob){
+  //   const ffmpeg = createFFmpeg({ log: false });
+  //   await ffmpeg.load();
+  
+  //   const inputName = 'input.webm';
+  //   const outputName = 'output.wav';
+  
+  //   ffmpeg.FS('writeFile', inputName, await fetch(webmBlob).then((res) => res.arrayBuffer()));
+  
+  //   await ffmpeg.run('-i', inputName, outputName);
+  
+  //   const outputData = ffmpeg.FS('readFile', outputName);
+  //   const outputBlob = new Blob([outputData.buffer], { type: 'audio/wav' });
+  
+  //   return outputBlob;
+  // }

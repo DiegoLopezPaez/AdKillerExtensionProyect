@@ -46,7 +46,7 @@ chrome.action.onClicked.addListener(async (tab) => {
       type: 'stop-recording',
       target: 'offscreen'
     });
-    chrome.action.setIcon({ path: 'icons/not-recording.png' });
+    chrome.action.setIcon({ path: 'images/not-recording.png' });
     return;
   }
 
@@ -63,7 +63,7 @@ chrome.action.onClicked.addListener(async (tab) => {
     data: streamId
   });
 
-  chrome.action.setIcon({ path: '/icons/recording.png' });
+  chrome.action.setIcon({ path: '/images/recording.png' });
 });
 
 //Aca recibimos la data que capturamos de audio de la ventana activa y se la pasamos a nuestra API en python
