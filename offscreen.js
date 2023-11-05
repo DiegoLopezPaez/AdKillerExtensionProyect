@@ -64,7 +64,7 @@ async function startRecording(streamId) {
 
   window.location.hash = 'recording';
   // Start recording.
-  const recordingInterval = 6000; // 6 seconds in milliseconds
+  const recordingInterval = 5500; // 6 seconds in milliseconds
   doRecord(recordingInterval, media, data);
 }
 
@@ -79,6 +79,8 @@ async function doRecord(time, media, data){
     console.log("Frenando...")
     await recorder.stop();
     console.log("Termino.")
+
+    data = [];
   }
 }
 
