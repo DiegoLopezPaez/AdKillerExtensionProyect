@@ -1,21 +1,10 @@
-// Copyright 2023 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     https://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 navigator.serviceWorker.register("service-worker.js");
 var keepRecording;
 var source;
 var output;
 var media;
+let gainNode;
+let isMuted = false;
 
 chrome.runtime.onMessage.addListener(async (message) => {
   if (message.target === 'offscreen') {
@@ -60,7 +49,10 @@ async function startRecording(streamId) {
   // Continue to play the captured audio to the user.
   output = new AudioContext();
   source = output.createMediaStreamSource(media);
-  source.connect(output.destination);
+  gainNode = output.createGain();
+  source.connect(gainNode);
+  gainNode.connect(output.destination);
+  // source.connect(output.destination);
 
   window.location.hash = 'recording';
   // Start recording.
@@ -137,16 +129,24 @@ function getNewRecorder(media, data){
 
 async function muteAudio(){
    //ESTO PARECE ESTAR FUNCIONANDO, CON ESTO SE SILENCIA LA PESTANIA Y EN TRUE SE DESMUTEA
-   media.getAudioTracks().forEach(track => {
-    track.enabled = false;
-  });
+  //  media.getAudioTracks().forEach(track => {
+  //   track.enabled = false;
+  // });
+  if (!isMuted) {
+    gainNode.gain.setValueAtTime(0, output.currentTime);
+    isMuted = true;
+  }
 }
 
 async function unmuteAudio(){
     //ESTO PARECE ESTAR FUNCIONANDO, CON ESTO SE SILENCIA LA PESTANIA Y EN TRUE SE DESMUTEA
-  media.getAudioTracks().forEach(track => {
-    track.enabled = true;
-  });
+  // media.getAudioTracks().forEach(track => {
+  //   track.enabled = true;
+  // });
+  if (isMuted) {
+    gainNode.gain.setValueAtTime(1, output.currentTime);
+    isMuted = false;
+  }
 }
 
 
