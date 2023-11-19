@@ -113,6 +113,18 @@ function make_prediction(audioData){
         //   chrome.tabs.update(activeTab.id, { muted: true });
         // });
       }
+      if(data.resultado == 2){
+        console.log(data.song)
+        // if(variableDelUsuarioSiNoMusica){
+        if(true){
+          //default o el usuario eligio no escuchar las canciones
+          ncDataEvent();
+        }
+        else{
+          //el usaruio eligio que si quiere escuchar canciones
+          cDataEvent();
+        }
+      }
       else{
         cDataEvent();
         // Obtener la pestaña activa
