@@ -35,7 +35,7 @@ chrome.action.onClicked.addListener(async (tab) => {
       type: 'stop-recording',
       target: 'offscreen'
     });
-    chrome.action.setIcon({ path: 'images/not-recording.png' });
+    //chrome.action.setIcon({ path: 'images/not-recording.png' });
     return;
   }
 
@@ -52,7 +52,7 @@ chrome.action.onClicked.addListener(async (tab) => {
     data: streamId
   });
 
-  chrome.action.setIcon({ path: '/images/recording.png' });
+  //chrome.action.setIcon({ path: '/images/recording.png' });
 });
 
 //Aca recibimos la data que capturamos de audio de la ventana activa y se la pasamos a nuestra API en python
@@ -104,14 +104,6 @@ function make_prediction(audioData){
       console.log('Respuesta de la API:', data.resultado);
       if(data.resultado == 1){
         ncDataEvent();
-        // Obtener la pestaña activa
-        // chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        //   const activeTab = tabs[0];
-
-        //   console.log("Muteando pestania...")
-        //   // Silenciar la pestaña activa
-        //   chrome.tabs.update(activeTab.id, { muted: true });
-        // });
       }
       if(data.resultado == 2){
         console.log(data.song)
@@ -127,15 +119,6 @@ function make_prediction(audioData){
       }
       else{
         cDataEvent();
-        // Obtener la pestaña activa
-        // chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        //   const activeTab = tabs[0];
-
-          
-        //   console.log("Des-muteando pestania...")
-        //   // Devolver volumen a la pestaña activa
-        //   chrome.tabs.update(activeTab.id, { muted: false });
-        // });
       }
     })
     .catch(error => {
@@ -170,32 +153,3 @@ function cDataEvent(){
     }
   }
 }
-
-// async function switch_batch(){
-//   //BADGE DE OFF Y ON -----------------------------------------------------------------
-//   // Retrieve the action badge to check if the extension is 'ON' or 'OFF'
-//   const prevState = await chrome.action.getBadgeText({ tabId: tab.id });
-//   // Next state will always be the opposite
-//   const nextState = prevState === 'ON' ? 'OFF' : 'ON'
-
-//   // Set the action badge to the next state
-//   await chrome.action.setBadgeText({
-//     tabId: tab.id,
-//     text: nextState,
-//   });
-
-//   if (nextState === "ON") {
-//     // Insert the CSS file when the user turns the extension on
-//     await chrome.scripting.insertCSS({
-//       files: ["styles/focus-mode.css"],
-//       target: { tabId: tab.id },
-//     });
-//   } else if (nextState === "OFF") {
-//     // Remove the CSS file when the user turns the extension off
-//     await chrome.scripting.removeCSS({
-//       files: ["styles/focus-mode.css"],
-//       target: { tabId: tab.id },
-//     });
-//   }
-//   //-------------------------------------------------------------------------------------
-// }

@@ -52,25 +52,20 @@ async function startRecording(streamId) {
   gainNode = output.createGain();
   source.connect(gainNode);
   gainNode.connect(output.destination);
-  // source.connect(output.destination);
 
   window.location.hash = 'recording';
   // Start recording.
-  const recordingInterval = 5500; // 6 seconds in milliseconds
+  const recordingInterval = 5500; // seconds in milliseconds
   doRecord(recordingInterval, media, data);
 }
 
 async function doRecord(time, media, data){
   while(keepRecording){
     recorder = getNewRecorder(media, data)
-    console.log("Empezando a grabar...")
     recorder.start();
     // // Usar await para pausar la ejecución durante 5 segundos.
-    console.log("En el timeout, esperando...")
     await new Promise(resolve => setTimeout(resolve, time));
-    console.log("Frenando...")
     await recorder.stop();
-    console.log("Termino.")
 
     data = [];
   }
@@ -128,10 +123,6 @@ function getNewRecorder(media, data){
 
 
 async function muteAudio(){
-   //ESTO PARECE ESTAR FUNCIONANDO, CON ESTO SE SILENCIA LA PESTANIA Y EN TRUE SE DESMUTEA
-  //  media.getAudioTracks().forEach(track => {
-  //   track.enabled = false;
-  // });
   if (!isMuted) {
     gainNode.gain.setValueAtTime(0, output.currentTime);
     isMuted = true;
@@ -139,38 +130,8 @@ async function muteAudio(){
 }
 
 async function unmuteAudio(){
-    //ESTO PARECE ESTAR FUNCIONANDO, CON ESTO SE SILENCIA LA PESTANIA Y EN TRUE SE DESMUTEA
-  // media.getAudioTracks().forEach(track => {
-  //   track.enabled = true;
-  // });
   if (isMuted) {
     gainNode.gain.setValueAtTime(1, output.currentTime);
     isMuted = false;
   }
 }
-
-
-  //  // output.createGain().gain.value = "0";
-  // // source.context.gain.value = "0";
-  // const gainNode = output.createGain();
-  // // Conectar el nodo de ganancia al destino de AudioContext (que es la salida de audio)
-  // gainNode.connect(output.destination);
-  // // Establecer el valor de ganancia a cero (para silenciar el audio)
-  // gainNode.gain.value = "0";
-
-  // async function convertWebmToMp3(webmBlob){
-  //   const ffmpeg = createFFmpeg({ log: false });
-  //   await ffmpeg.load();
-  
-  //   const inputName = 'input.webm';
-  //   const outputName = 'output.wav';
-  
-  //   ffmpeg.FS('writeFile', inputName, await fetch(webmBlob).then((res) => res.arrayBuffer()));
-  
-  //   await ffmpeg.run('-i', inputName, outputName);
-  
-  //   const outputData = ffmpeg.FS('readFile', outputName);
-  //   const outputBlob = new Blob([outputData.buffer], { type: 'audio/wav' });
-  
-  //   return outputBlob;
-  // }
